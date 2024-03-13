@@ -1,15 +1,9 @@
-import heartOutline from './heart-outline.png';
-import heart from './heart.png';
-import logo from './logo.png';
 import search from './Search.png';
 import tick from './tick.png';
 import cross from './cross.png';
-import logo02 from './logo02.png';
 import menu from './menu.png';
-import discord from './discord.png';
 import instagram from './instagram.png';
 import telegram from './telegram.png';
-import twitter from './twitter.png';
 import upload from './upload.png';
 import nft1 from './nft1.png';
 import nft2 from './nft2.png';
@@ -34,27 +28,22 @@ import creator9 from './creator9.png';
 import creator10 from './creator10.jpg';
 import right from './right.png';
 import left from './left.png';
-import headerbg from './headerbg.png';
-import loader from './loader.gif';
 import arrow from './arrow.png';
 import logo03 from './logo03.png';
 import bannerImage from  './banner.jpg';
+import github from './github.png';
+import linkedin from './linkedin.png';
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     bannerImage,
-    heartOutline,
-    heart,
-    logo,
     search,
     tick,
     cross,
-    logo02,
     menu,
-    discord,
     instagram,
     telegram,
-    twitter,
     upload,
     nft1,
     nft2,
@@ -79,8 +68,8 @@ export default {
     creator10,
     right,
     left,
-    headerbg,
-    loader,
     arrow,
     logo03,
+    github,
+    linkedin,
 };

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import {useRouter} from "next/navigation";
 
 import {NFTContext} from "../../../context/NFTContext";
-import {NFTCard} from "@/components";
 import {Loader} from "@/components";
 import Button from "@/components/Button";
 import images from "@/assets";
@@ -74,7 +73,6 @@ const NFTDetails = (params) => {
     }, [params]);
 
     const checkout = async () => {
-        console.log(nft);
         await buyNFT(nft);
         setPaymentModal(false);
         setSuccessModal(true);

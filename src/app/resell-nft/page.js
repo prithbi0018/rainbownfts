@@ -12,20 +12,20 @@ import {useSearchParams} from "next/navigation";
 
 const ResellNFT = () => {
     const { createSale, isLoadingNFT } = useContext(NFTContext);
-    // const searchParams = useSearchParams();
-    // const tokenURI = searchParams.get('tokenURI');
-    // const tokenId = searchParams.get('tokenId');
+    const searchParams = useSearchParams();
+    const tokenURI = searchParams.get('tokenURI');
+    const tokenId = searchParams.get('tokenId');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState('');
     const router = useRouter();
-    const fetchNFT = async (params) => {
-        const {data} = await axios.get(`${params.tokenURI}`);
+    const fetchNFT = async () => {
+        const {data} = await axios.get(`${tokenURI}`);
         setPrice(data.price);
         setImage(data.image);
     };
 
-    useEffect((params) => {
-        if (params.tokenURI) fetchNFT();
+    useEffect(() => {
+        if (tokenURI) fetchNFT();
     }, []);
 
     if (isLoadingNFT) {
@@ -36,8 +36,8 @@ const ResellNFT = () => {
         )
     }
 
-    const resell = async (params) => {
-        await createSale(params.tokenURI, price, true, params.tokenId);
+    const resell = async () => {
+        await createSale(tokenURI, price, true, tokenId);
 
         router.push('/');
     }
@@ -55,9 +55,9 @@ const ResellNFT = () => {
                     placeholder="NFT Price"
                     handleClick={(event) =>setPrice(event.target.value)}
                 />
-                    <div className="flex justify-center items-center">
-                        {image && <Image src={image} alt="NFT image" className="rounded mt-4" width={350} height={350} priority={false}/>}
-                    </div>
+                <div className="flex justify-center items-center">
+                    {image && <Image src={image} alt="NFT image" className="rounded mt-4" width={350} height={350} priority={false}/>}
+                </div>
                 <div className="mt-7 w-full flex justify-end">
                     <Button
                         btnName="Resell NFT"

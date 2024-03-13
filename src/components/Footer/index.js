@@ -29,7 +29,7 @@ function Footer() {
                 </div>
             <div className="flex-1 flexBetweenStart flex-wrap ml-12 md:ml-0 md:mt-8">
                 <FooterLinks heading="Rainbow Nft" items={['Explore', 'How it works', 'Contact us']}/>
-                <FooterLinks heading="Support" items={['Help center', 'Terms of services', 'Legal', 'Privacy policy']}/>
+                <FooterLinks heading="Support" items={['Help center', 'Terms of services', 'Privacy policy']}/>
             </div>
             </div>
 
@@ -39,17 +39,39 @@ function Footer() {
                     <p className="font-poppins dark:text-nft-gray-1 text-nft-gray-3 font-semibold text-base">RainbowNft,
                         Inc.All Rights Reserved.</p>
                     <div className="flex flex-row sm:mt-4">
-                        {[images.instagram, images.twitter, images.telegram, images.discord].map((image, index) => (
-                            <div className="mx-2 cursor-pointer" key={index}>
-                                <Image src={image}
-                                       style={{objectFit:"contain"}}
-                                       width={24}
-                                       height={24}
+                        <div className="mx-2 cursor-pointer">
+                            <a href="https://www.instagram.com/m_a_n_d_o.99/" target="_blank" rel="noreferrer">
+                                <Image src={images.instagram}
+                                       style={{objectFit: "contain"}}
+                                       width={30}
+                                       height={30}
                                        alt="social"
-                                       className={theme === 'light'? 'filter invert':'filter out'}
+                                       className={theme === 'light' ? 'filter invert' : 'filter out'}
                                 />
-                            </div>
-                        ))}
+                            </a>
+                        </div>
+                        <div className="mx-2 cursor-pointer">
+                            <a href="https://www.linkedin.com/in/infosuraj" target="_blank" rel="noreferrer">
+                                <Image src={images.linkedin}
+                                       style={{objectFit: "contain"}}
+                                       width={30}
+                                       height={30}
+                                       alt="social"
+                                       className={theme === 'light' ? 'filter invert' : 'filter out'}
+                                />
+                            </a>
+                        </div>
+                        <div className="mx-2 cursor-pointer">
+                            <a href="https://github.com/infosuraj" target="_blank" rel="noreferrer">
+                                <Image src={images.github}
+                                       style={{objectFit: "contain"}}
+                                       width={30}
+                                       height={30}
+                                       alt="social"
+                                       className={theme === 'light' ? 'filter invert' : 'filter out'}
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

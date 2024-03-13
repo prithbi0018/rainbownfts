@@ -88,7 +88,7 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
         checkActive(active, setActive, pathname);
-    }, [pathname]);
+    }, []);
     return (
         <nav
             className="flexBetween w-full fixed z-10 p-4 flex-row border-b bg-gray-100 dark:bg-nft-dark border-nft-gray-1 dark:border-nft-black-1">

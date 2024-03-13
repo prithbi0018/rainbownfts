@@ -114,7 +114,7 @@ export const NFTProvider = ({ children }) => {
     const fetchNFTs = async () => {
         setIsLoadingNFT(false);
         try {
-            const provider = new ethers.providers.JsonRpcProvider(`https://rpc-mumbai.maticvigil.com/v1/${process.env.NEXT_PUBLIC_MATICVIGIL_API_KEY}`);
+            const provider = new ethers.providers.JsonRpcProvider(`https://rpc.ankr.com/polygon_mumbai/${process.env.NEXT_PUBLIC_ANKR_API_KEY}`);
             const contract = fetchContract(provider);
 
             const data = await contract.fetchMarketItems();
