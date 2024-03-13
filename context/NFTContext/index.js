@@ -6,9 +6,6 @@ import axios from "axios";
 
 import {MarketAddress, MarketAddressAbi} from "../constants";
 
-const { TatumSDK, Network } = require("@tatumio/tatum");
-const tatumApi = process.env.NEXT_PUBLIC_TATUM_API;
-
 
 const fetchContract = (signerOrProvider) => new ethers.Contract(MarketAddress, MarketAddressAbi, signerOrProvider);
 export const NFTContext = React.createContext({});
@@ -32,7 +29,6 @@ export const NFTProvider = ({ children }) => {
 
     useEffect(() => {
         checkIfWalletIsConnected();
-        // createSale('test', '0.025');
     }, []);
 
     const connectWallet = async () => {
@@ -46,19 +42,17 @@ export const NFTProvider = ({ children }) => {
 
     const uploadToIpfs = async (file) => {
         try {
-            const tatumClient = await TatumSDK.init({
-                network: Network.POLYGON,
-                verbose: true,
-                apiKey: {
-                    v4:
-                    tatumApi,
+            const formData = new FormData();
+            formData.append("file", file);
+            const res = await axios({
+                method: "post",
+                url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                data: formData,
+                headers: {
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JSON_SECRET}`,
                 },
             });
-            const buffer = file;
-
-            const result = await tatumClient.ipfs.uploadFile({ file: buffer });
-
-            return result.data.ipfsHash;
+            return res.data.IpfsHash;
 
         } catch (error) {
             console.log("Error uploading file:", error); // Log the specific error
@@ -69,23 +63,26 @@ export const NFTProvider = ({ children }) => {
         const{name, description, price} = formInput;
 
         if(!name ||!description ||!price) return alert("Please");
-        console.log(name, description, price, fileUrl);
-
-        const data = JSON.stringify({name, description, price, image: fileUrl});
 
         try {
-            const tatumClient = await TatumSDK.init({
-                network: Network.POLYGON,
-                verbose: true,
-                apiKey: {
-                    v4:
-                    tatumApi,
+            const data = JSON.stringify({
+                pinataContent: {
+                    name: name,
+                    description: description,
+                    price: price,
+                    image: fileUrl
                 },
+                pinataMetadata: {
+                    name: `${name}.json`
+                }
+            })
+            const res = await axios.post("https://api.pinata.cloud/pinning/pinJSONToIPFS", data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JSON_SECRET}`
+                }
             });
-            const buffer = data;
-            const result = await tatumClient.ipfs.uploadFile({ file: buffer });
-            console.log(JSON.stringify(result))
-            const url = `https://ipfs.io/ipfs/${result.data.ipfsHash}`;
+            const url = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
             await createSale(url, price)
             router.push("/");
 
@@ -132,7 +129,6 @@ export const NFTProvider = ({ children }) => {
             return items.filter(item => item !== null);
         } catch (error) {
             console.error('Error fetching NFTs:', error);
-            // Handle the error, e.g., return an empty array or throw an error
             return [];
         }
     }
