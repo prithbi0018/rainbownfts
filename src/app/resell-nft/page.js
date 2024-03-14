@@ -8,24 +8,20 @@ import {Button} from "@/components";
 import {Loader} from "@/components";
 import Input from "@/components/Input";
 import axios from "axios";
-import {useSearchParams} from "next/navigation";
 
-const ResellNFT = () => {
+const ResellNFT = (params) => {
     const { createSale, isLoadingNFT } = useContext(NFTContext);
-    const searchParams = useSearchParams();
-    const tokenURI = searchParams.get('tokenURI');
-    const tokenId = searchParams.get('tokenId');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(0);
     const [image, setImage] = useState('');
     const router = useRouter();
     const fetchNFT = async () => {
-        const {data} = await axios.get(`${tokenURI}`);
+        const {data} = await axios.get(`${params.searchParams.tokenURI}`);
         setPrice(data.price);
         setImage(data.image);
     };
 
     useEffect(() => {
-        if (tokenURI) fetchNFT();
+        if (params.searchParams.tokenURI) fetchNFT();
     }, []);
 
     if (isLoadingNFT) {
@@ -37,9 +33,14 @@ const ResellNFT = () => {
     }
 
     const resell = async () => {
-        await createSale(tokenURI, price, true, tokenId);
+        try {
+            await createSale(params.searchParams.tokenURI, price, true, params.searchParams.tokenId);
 
-        router.push('/');
+            router.push('/');
+        }catch (e) {
+            console.log('Transaction Rejected', e);
+            router.push('/my-nfts');
+        }
     }
 
     return (

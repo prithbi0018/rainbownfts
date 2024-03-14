@@ -11,7 +11,6 @@ import {NFTContext} from "../../context/NFTContext";
 import {getCreators} from "../../utils/getTopCreators";
 import {SearchBar} from "@/components";
 import Loader from "@/components/Loader";
-
 const Home = () => {
     const {fetchNFTs} = useContext(NFTContext);
     const [hideButtons, setHideButtons] = useState(false)

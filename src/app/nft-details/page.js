@@ -51,7 +51,7 @@ const PaymentBodyCmp = ({nft, nftCurrency}) => (
 )
 
 const NFTDetails = (params) => {
-    const {currentAccount, nftCurrency, buyNFT, isLoadingNFT} = useContext(NFTContext);
+    const {currentAccount, nftCurrency, buyNFT, isLoadingNFT, connectWallet} = useContext(NFTContext);
     const [isLoading, setIsLoading] = useState(true)
     const [paymentModal, setPaymentModal] = useState(false)
     const [successModal, setSuccessModal] = useState(false)
@@ -73,9 +73,14 @@ const NFTDetails = (params) => {
     }, [params]);
 
     const checkout = async () => {
-        await buyNFT(nft);
-        setPaymentModal(false);
-        setSuccessModal(true);
+        try {
+            await buyNFT(nft);
+            setPaymentModal(false);
+            setSuccessModal(true);
+        } catch (error) {
+            console.error("Transaction rejected by user", error);
+            setPaymentModal(false);
+        }
     }
 
     if (isLoading) return <Loader/>;
@@ -122,27 +127,39 @@ const NFTDetails = (params) => {
                     </div>
                 </div>
                 <div className="flex flex-row sm:flex-col mt-10">
-                    {currentAccount === nft.seller.toLowerCase()
-                        ? (
-                            <p className="font-poppins dark:text-white text-nft-black-1 text-base font-normal border border-gray p-2">
-                                You are the owner of this NFT 🚫<span
-                                className="font-poppins text-red-700 font-extrabold"> ! Can not perform this action</span>
-                            </p>
-                        ) : currentAccount === nft.owner.toLowerCase()
-                            ?(
+                    {nft.seller && nft.owner && (
+                        currentAccount
+                            ? (
+                                currentAccount === nft.seller.toLowerCase()
+                                    ? (
+                                        <p className="font-poppins dark:text-white text-nft-black-1 text-base font-normal border border-gray p-2">
+                                            You are the owner of this NFT 🚫<span
+                                            className="font-poppins text-red-700 font-extrabold"> ! Can not perform this action</span>
+                                        </p>
+                                    ) : currentAccount === nft.owner.toLowerCase()
+                                        ? (
+                                            <Button
+                                                btnName={`RESELL`}
+                                                classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
+                                                handeClick={() => router.push(`/resell-nft?tokenId=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                                            />
+                                        )
+                                        : (
+                                            <Button
+                                                btnName={`Buy for ${nft.price} ${nftCurrency}`}
+                                                classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
+                                                handeClick={() => setPaymentModal(true)}
+                                            />
+                                        )
+                            ) : (
                                 <Button
-                                    btnName={`RESELL`}
-                                    classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
-                                    handeClick={() => router.push(`/resell-nft?tokenId=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                                    btnName="Connect"
+                                    classStyles="mx-2 rounded-xl"
+                                    handeClick={connectWallet}
+                                    setIsOpen={false}
                                 />
                             )
-                            :(
-                                <Button
-                                btnName={`Buy for ${nft.price} ${nftCurrency}`}
-                                classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
-                                handeClick={() => setPaymentModal(true)}
-                            />
-                        )}
+                    )}
                 </div>
             </div>
 

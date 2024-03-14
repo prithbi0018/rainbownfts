@@ -5,7 +5,6 @@ import React from "react";
 import {useTheme} from "next-themes";
 import {Button} from "@/components";
 import CustomForm from "@/components/MailChimpForm"
-
 const FooterLinks = ({heading, items}) => (
     <div className="flex-1 justify-start items-start">
         <h3 className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xl mb-8">{heading}</h3>
