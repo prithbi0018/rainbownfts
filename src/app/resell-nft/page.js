@@ -8,20 +8,23 @@ import {Button} from "@/components";
 import {Loader} from "@/components";
 import Input from "@/components/Input";
 import axios from "axios";
+import {useSearchParams} from "next/navigation";
+import {Suspense} from "react";
 
-const ResellNFT = (params) => {
+const ResellNFT = () => {
     const { createSale, isLoadingNFT } = useContext(NFTContext);
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('');
     const router = useRouter();
+    const params = useSearchParams();
     const fetchNFT = async () => {
-        const {data} = await axios.get(`${params.searchParams.tokenURI}`);
+        const {data} = await axios.get(`${params.get('tokenURI')}`);
         setPrice(data.price);
         setImage(data.image);
     };
 
     useEffect(() => {
-        if (params.searchParams.tokenURI) fetchNFT();
+        if (params.get('tokenURI')) fetchNFT();
     }, []);
 
     if (isLoadingNFT) {
@@ -34,7 +37,7 @@ const ResellNFT = (params) => {
 
     const resell = async () => {
         try {
-            await createSale(params.searchParams.tokenURI, price, true, params.searchParams.tokenId);
+            await createSale(params.get('tokenURI'), price, true, params.get('tokenId'));
 
             router.push('/');
         }catch (e) {

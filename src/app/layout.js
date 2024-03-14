@@ -4,6 +4,7 @@ import './globals.css'
 import Providers from "@/app/providers";
 import {NFTProvider} from "../../context/NFTContext";
 import React from "react";
+import { Suspense } from "react";
 
 export const metadata = {
     title: 'Rainbow NFTs',
@@ -22,9 +23,11 @@ const RootLayout = ({children}) => (
             <body>
             <Providers>
                 <Navbar/>
-                <div className="pt-[80px] bg-gray-100 dark:bg-nft-dark">
-                    {children}
-                </div>
+                <Suspense>
+                    <div className="pt-[80px] bg-gray-100 dark:bg-nft-dark">
+                        {children}
+                    </div>
+                </Suspense>
                 <Footer/>
             </Providers>
             </body>

@@ -8,6 +8,8 @@ import {Loader} from "@/components";
 import Button from "@/components/Button";
 import images from "@/assets";
 import Modal from "@/components/Modal";
+import {useSearchParams} from "next/navigation";
+import { Suspense } from 'react'
 
 const PaymentBodyCmp = ({nft, nftCurrency}) => (
     <div className="flex flex-col">
@@ -50,7 +52,7 @@ const PaymentBodyCmp = ({nft, nftCurrency}) => (
     </div>
 )
 
-const NFTDetails = (params) => {
+const NFTDetails = () => {
     const {currentAccount, nftCurrency, buyNFT, isLoadingNFT, connectWallet} = useContext(NFTContext);
     const [isLoading, setIsLoading] = useState(true)
     const [paymentModal, setPaymentModal] = useState(false)
@@ -66,11 +68,30 @@ const NFTDetails = (params) => {
         tokenURI: ''
     });
     const router = useRouter();
+    const params = useSearchParams();
     useEffect(() => {
-        if (!params) return;
-        setNft(params.searchParams);
+        const tokenId = params.get('tokenId');
+        const seller = params.get('seller');
+        const owner = params.get('owner');
+        const price = params.get('price');
+        const image = params.get('image');
+        const description = params.get('description');
+        const tokenURI = params.get('tokenURI');
+        if (!tokenId) {
+            return;
+        }
+        setNft({
+                tokenId,
+                seller,
+                owner,
+                price,
+                image,
+                description,
+                tokenURI,
+        }
+        );
         setIsLoading(false);
-    }, [params]);
+    }, []);
 
     const checkout = async () => {
         try {
@@ -127,16 +148,14 @@ const NFTDetails = (params) => {
                     </div>
                 </div>
                 <div className="flex flex-row sm:flex-col mt-10">
-                    {nft.seller && nft.owner && (
-                        currentAccount
-                            ? (
-                                currentAccount === nft.seller.toLowerCase()
+                    {currentAccount
+                            ? (nft.seller && currentAccount === nft.seller.toLowerCase())
                                     ? (
                                         <p className="font-poppins dark:text-white text-nft-black-1 text-base font-normal border border-gray p-2">
                                             You are the owner of this NFT 🚫<span
                                             className="font-poppins text-red-700 font-extrabold"> ! Can not perform this action</span>
                                         </p>
-                                    ) : currentAccount === nft.owner.toLowerCase()
+                                    ) : (nft.owner && currentAccount === nft.owner.toLowerCase())
                                         ? (
                                             <Button
                                                 btnName={`RESELL`}
@@ -151,14 +170,13 @@ const NFTDetails = (params) => {
                                                 handeClick={() => setPaymentModal(true)}
                                             />
                                         )
-                            ) : (
+                             : (
                                 <Button
                                     btnName="Connect"
                                     classStyles="mx-2 rounded-xl"
                                     handeClick={connectWallet}
                                     setIsOpen={false}
                                 />
-                            )
                     )}
                 </div>
             </div>
