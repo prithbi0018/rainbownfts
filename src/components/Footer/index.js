@@ -39,7 +39,7 @@ function Footer() {
                         Inc.All Rights Reserved.</p>
                     <div className="flex flex-row sm:mt-4">
                         <div className="mx-2 cursor-pointer">
-                            <a href="https://www.instagram.com/m_a_n_d_o.99/" target="_blank" rel="noreferrer">
+                            <a href="https://www.instagram.com/prithbi0018/" target="_blank" rel="noreferrer">
                                 <Image src={images.instagram}
                                        style={{objectFit: "contain"}}
                                        width={30}
@@ -50,7 +50,7 @@ function Footer() {
                             </a>
                         </div>
                         <div className="mx-2 cursor-pointer">
-                            <a href="https://www.linkedin.com/in/infosuraj" target="_blank" rel="noreferrer">
+                            <a href="https://www.linkedin.com/in/contactprithbi" target="_blank" rel="noreferrer">
                                 <Image src={images.linkedin}
                                        style={{objectFit: "contain"}}
                                        width={30}
@@ -61,7 +61,7 @@ function Footer() {
                             </a>
                         </div>
                         <div className="mx-2 cursor-pointer">
-                            <a href="https://github.com/infosuraj" target="_blank" rel="noreferrer">
+                            <a href="https://github.com/prithbi0018/Prithbirajpanda" target="_blank" rel="noreferrer">
                                 <Image src={images.github}
                                        style={{objectFit: "contain"}}
                                        width={30}
